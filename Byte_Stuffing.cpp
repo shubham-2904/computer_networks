@@ -4,33 +4,35 @@ using namespace std;
 
 #define MAX_Size 100
 
-void byteStuffing(int byteSize) {
-    string bytes;
-    cout << "Enter string : ";
-    cin >> bytes;
-
-    if (bytes.length() > byteSize) {
-        cout << "string is out of bound" << endl;
-        return;
+bool checkFlag(char *ptr, string delimiter) {
+    for (int i = 0; i < delimiter.size(); i++) {
+        if (delimiter[i] != *(ptr++))
+            return false;
     }
+    return true;
+}
 
-    int noOfFrame; 
-    cout << "\nEnter number of frame you want to create: ";
-    cin >> noOfFrame;
-    
-    int noOfCharPerFrame = bytes.length() / noOfFrame;
+void byteStuffing(int byteSize) {
+   string byte;
+   cout << "Enter the string: ";
+   cin >> byte;
 
-    // for adding padding
-    int padding = bytes.length() % noOfFrame;
+   cout << "\nEnter size of frame: ";
+   int sizeOfFrame;
+   cin >> sizeOfFrame;
+
+   int noOfFrame = byte.length() / sizeOfFrame;
+
+   // for adding padding
+    int padding = byte.length() % sizeOfFrame;
     if (padding != 0) {
-        padding = noOfFrame - padding;
+        padding = sizeOfFrame - padding;
         string addPadding = "";
         for (int i = 0 ; i < padding; i++) {
             addPadding += "0";
         }
-        // noOfFrame += 1;
-        noOfCharPerFrame += 1;
-        bytes.append(addPadding);
+        noOfFrame += 1;
+        byte.append(addPadding);
     }
 
     // creating frames
@@ -39,11 +41,11 @@ void byteStuffing(int byteSize) {
 
     // outer loop for frames
     for (int i = 0; i < noOfFrame; i++) {
-        // for bits
+        // for byte
         string str = "";
         vector<string> f;
-        for (int j = 0; j < noOfCharPerFrame; j++) {
-            str = str + bytes[k];
+        for (int j = 0; j < sizeOfFrame; j++) {
+            str = str + byte[k];
             k++;
         }
         f.push_back(str);
@@ -64,15 +66,40 @@ void byteStuffing(int byteSize) {
     }
 
     cout << "\nFrames with delimiter: " << endl;
-    for (string s: delimitFrame) {
-        cout << s << endl;
-    }    
+    for (auto f : delimitFrame) {
+        cout << f << endl;
+    }
+
+    vector<string> result;
+    for (int i = 0; i < delimitFrame.size(); ++i) {
+        string str;
+        for (int j = 0; j < delimitFrame[i].size(); ++j) {
+            bool check = checkFlag(&delimitFrame[i][j], delimiter);
+            if (check) {
+                for (int k = 0; k < delimiter.size(); ++k) {
+                    str += delimitFrame[i][j++];
+                }
+                str += delimiter;
+                --j;
+            }
+            else {
+                str += delimitFrame[i][j];
+            }
+        }
+        result.push_back(str);
+    }
+
+    cout << "-------------------------------------" << endl;
+    cout << "After byte stuffing" << endl;
+    cout << "-------------------------------------" << endl;
+    for (string f : result) {
+        cout << f << "\n";
+    }
     
-    return;
 }
 
 int main() {
-    cout << "Enter the byte size of bits: ";
+    cout << "Enter the byte size: ";
     int byteSize;
     cin >> byteSize;
 
