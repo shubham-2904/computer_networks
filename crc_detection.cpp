@@ -54,8 +54,11 @@ void encode(string data, string key) {
 }
 
 int main() {
-	string data = "100100";
-	string key = "1101";
+	string data, key;
+	cout << "Enter data in 0's or 1's format: ";
+	cin >> data;
+	cout << "Enter the value of key: ";
+	cin >> key;
 
 	encode(data, key);
 	return 0;
