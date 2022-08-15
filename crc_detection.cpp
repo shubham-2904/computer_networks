@@ -43,14 +43,13 @@ string mod2div(string divident, string divisor) {
 	return temp;
 }
 
-void encode(string data, string key) {
+pair<string, string> encode(string data, string key) {
 	int l_key = key.length();
 	string append_data = (data + string(l_key - 1, '0'));
 	string remainder = mod2div(append_data, key);
 	string codeword = data + remainder;
 
-	cout << "Remainder: " << remainder << endl;
-	cout << "Encoded data (data + remiander): " << codeword << endl;
+	return {remainder, codeword};
 }
 
 int main() {
@@ -60,6 +59,9 @@ int main() {
 	cout << "Enter the value of key: ";
 	cin >> key;
 
-	encode(data, key);
+	pair<string, string> result = encode(data, key);
+
+	cout << "Remainder: " << result.first << endl;
+	cout << "Encoded data (data + remiander): " << result.second << endl;
 	return 0;
 }
