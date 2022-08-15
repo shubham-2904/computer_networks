@@ -71,6 +71,14 @@ void findingHammingCode(vector<int> &msgBit) {
 }
 
 int main() {
-	vector<int> msgBit = {0,1,0,1};
+
+	vector<int> msgBit;
+	cout << "Enter message bit: " << endl;
+	string data;
+	cin >> data;
+	for (auto element : data) {
+		int d = element - '0';
+		msgBit.push_back(d);
+	}
 	findingHammingCode(msgBit);
 }
